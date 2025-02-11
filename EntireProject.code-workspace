@@ -1,0 +1,13 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "../UtilsAutoGating"
+    },
+    {
+      "path": "../PipelineGatingIlcTasa"
+    }
+  ]
+}
