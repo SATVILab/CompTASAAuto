@@ -16,32 +16,24 @@ For more information, please contact:
 
 ## Details
 
-### How to run within a container on the HPC
+### How to run within a container in a Linux environment automatically
 
-- Ensure that `"$HOME"/dotfiles/install-hpc.sh` has been run.
-- Switch to the directory in the HPC in which you wish to keep all the repos associated with this project.
-- Run `git clone https://github.com/SATVILab/CompTASA`.
-- Run `cd CompTASA`
-- Run `apptainer-pull -o SATVILab`
-- Run `apptainer-vscode`
-- Within VS Code:
-    - In a terminal where the working directory is `CompTASA`:
-      - Run `repos-git-clone`
-      - Run `repos-workspace-add`
-    - For each analysis/data processing repo (just not this infrastructure repo), e.g. `PipelineGatingIlcTasa`:
-      - Switch to them as your working directory, e.g. `cd ../PipelineGatingIlcTasa`.
-      - Run `config-r-renv-restore`.
-    - In the repo in which you want to work, run `radian` to start `R` and then run code as usual.
+## Details
 
-### How to run within a container on GitHub Codespaces
+### How to run a project "automatically" in a container on a "fresh" Linux system using `apptainer`
 
-- Ensure that the GitHub Codespace has access to the following environment variables:
-  - `GH_TOKEN`: Classic PAT for GitHub
-- Open GitHub Codespace
-- In a terminal where the working directory is `CompTASA`:
-  - Run `repos-git-clone`
-  - Run `repos-workspace-add`
-- For each analysis/data processing repo (just not this infrastructure repo), e.g. `PipelineGatingIlcTasa`:
-  - Switch to them as your working directory, e.g. `cd ../PipelineGatingIlcTasa`.
-  - Run `config-r-renv-restore`.
-- In the repo in which you want to work, run `radian` to start `R` and then run code as usual.
+<!--
+- Ensure that `"$HOME"/dotfiles/install-hpc.sh` has been run:
+  - Will need to mimick these settings
+!-->
+- Store raw data in a folder whose path is specified in `~/.Renviron` as `PATH_RAW_DATA` (absolute path).
+  - Note: not for us.
+- Clone a template repo down that has the necessary `renv` config:
+    - Run `git clone https://github.com/SATVILab/CompTASAAuto`.
+    - Run `cd CompTASAAuto`
+    - Run `./scripts/setup_r_config.sh`
+     - Need to specify paths to `R` libraries, as `install-hpc.sh` script does, for `renv` to use the cache.
+    - Run `./scripts/apptainer-pull -o SATVILab`.
+      - Run `mkdir -p /scratch/$USER/.cache/apptainer`
+      - Run `apptainer build --force /scratch/$USER/.cache/apptainer/comptasaauto.sif docker://ghcr.io/SATVILab/CompTASAuto:latest`
+    - Run `apptainer exec /scratch/$USER/.cache/apptainer/comptasaauto.sif ./scripts/run_analysis.sh`
