@@ -28,12 +28,13 @@ For more information, please contact:
 !-->
 - Store raw data in a folder whose path is specified in `~/.Renviron` as `PATH_RAW_DATA` (absolute path).
   - Note: not for us.
-- Clone a template repo down that has the necessary `renv` config:
-    - Run `git clone https://github.com/SATVILab/CompTASAAuto`.
-    - Run `cd CompTASAAuto`
-    - Run `./scripts/setup_r_config.sh`
-     - Need to specify paths to `R` libraries, as `install-hpc.sh` script does, for `renv` to use the cache.
-    - Run `./scripts/apptainer-pull -o SATVILab`.
-      - Run `mkdir -p /scratch/$USER/.cache/apptainer`
-      - Run `apptainer build --force /scratch/$USER/.cache/apptainer/comptasaauto.sif docker://ghcr.io/SATVILab/CompTASAuto:latest`
-    - Run `apptainer exec /scratch/$USER/.cache/apptainer/comptasaauto.sif ./scripts/run_analysis.sh`
+- Clone analysis repo:
+  - Run `git clone https://github.com/SATVILab/CompTASAAuto`.
+  - Run `cd CompTASAAuto`
+- Get `apptainer` image from GitHub Container Registry:
+  - Run `mkdir -p /scratch/$USER/.cache/apptainer`
+  - Run `apptainer build --force /scratch/$USER/.cache/apptainer/comptasaauto.sif docker://ghcr.io/SATVILab/CompTASAAuto:latest`
+- Run analysis:
+  - `apptainer exec /scratch/$USER/.cache/apptainer/comptasaauto.sif ./scripts/run_analysis.sh`
+
+Or, alternatively, run `scripts/run_setup_and_analysis.sh`.
